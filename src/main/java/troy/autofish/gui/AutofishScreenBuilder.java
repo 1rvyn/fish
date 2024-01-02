@@ -48,6 +48,18 @@ public class AutofishScreenBuilder {
                 .setYesNoTextSupplier(yesNoTextSupplier)
                 .build();
 
+        // Enable Random Head Movement
+        AbstractConfigListEntry toggleRandomHeadMovement = entryBuilder.startBooleanToggle(Text.translatable("options.autofish.randomHeadMovement.title"), config.isRandomHeadMovementEnabled())
+                .setDefaultValue(defaults.isRandomHeadMovementEnabled())
+                .setTooltip(Text.translatable("options.autofish.randomHeadMovement.tooltip_0"))
+                .setTooltip(Text.translatable("options.autofish.randomHeadMovement.tooltip_1"))
+                .setTooltip(Text.translatable("options.autofish.randomHeadMovement.tooltip_2"))
+                .setSaveConsumer(newValue -> {
+                modAutofish.getConfig().setRandomHeadMovementEnabled(newValue);
+                })
+                .setYesNoTextSupplier(yesNoTextSupplier)
+                .build();
+
         //Enable MultiRod
         AbstractConfigListEntry toggleMultiRod = entryBuilder.startBooleanToggle(Text.translatable("options.autofish.multirod.title"), config.isMultiRod())
                 .setDefaultValue(defaults.isMultiRod())
@@ -171,6 +183,7 @@ public class AutofishScreenBuilder {
 
         SubCategoryBuilder subCatBuilderBasic = entryBuilder.startSubCategory(Text.translatable("options.autofish.basic.title"));
         subCatBuilderBasic.add(toggleAutofish);
+        subCatBuilderBasic.add(toggleRandomHeadMovement);
         subCatBuilderBasic.add(toggleMultiRod);
         subCatBuilderBasic.add(toggleOpenWaterDetection);
         subCatBuilderBasic.add(toggleBreakProtection);
@@ -186,6 +199,7 @@ public class AutofishScreenBuilder {
 
         configCat.addEntry(subCatBuilderBasic.build());
         configCat.addEntry(subCatBuilderAdvanced.build());
+        
 
         return builder.build();
 

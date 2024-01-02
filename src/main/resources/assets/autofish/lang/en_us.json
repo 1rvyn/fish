@@ -8,6 +8,12 @@
   "options.autofish.enable.title": "Enable Autofish",
   "options.autofish.enable.tooltip": "Toggles the entire mod on or off.",
 
+  "options.autofish.randomHeadMovement.title": "Enable Random Head Movement",
+  "options.autofish.randomHeadMovement.tooltip_0": "Randomly moves your head",
+  "options.autofish.randomHeadMovement.tooltip_1": "while fishing to prevent it",
+  "options.autofish.randomHeadMovement.tooltip_2": "from getting stuck in one position.",
+
+
   "options.autofish.multirod.title": "Enable MultiRod",
   "options.autofish.multirod.tooltip_0": "Cycles through all of the",
   "options.autofish.multirod.tooltip_1": "available rods in the hotbar,",
@@ -21,6 +27,8 @@
   "options.autofish.open_water_detection.tooltip_0" : "In game versions above 20w12a(1.16),",
   "options.autofish.open_water_detection.tooltip_1" : "You can only get treasure loot at open water.",
   "options.autofish.open_water_detection.tooltip_2" : "This will alert you when you are not fishing at open water.",
+
+
 
 
   "options.autofish.persistent.title": "Enable Persistent Mode",

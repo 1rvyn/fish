@@ -23,6 +23,7 @@ import troy.autofish.monitor.FishMonitorMPMotion;
 import troy.autofish.monitor.FishMonitorMPSound;
 import troy.autofish.scheduler.ActionType;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +37,12 @@ public class Autofish {
     private boolean alreadyAlertOP = false;
     private boolean alreadyPassOP = false;
     private long hookRemovedAt = 0L;
+    private int fishCount = 0;
 
     public long timeMillis = 0L;
+
+    private static final int FISH_COUNT_THRESHOLD = 5; 
+
 
     public Autofish(FabricModAutofish modAutofish) {
         this.modAutofish = modAutofish;
@@ -108,6 +113,7 @@ public class Autofish {
         }
     }
 
+
     /**
      * Callback from mixin when chat packets are received
      * For multiplayer detection only
@@ -142,8 +148,42 @@ public class Autofish {
 
             //reel in
             useRod();
+
+            fishCount++;
+            if (fishCount >= FISH_COUNT_THRESHOLD) {
+                movePlayerHeadRandomly();
+                fishCount = 0; // reset the counter to prevent overflow
+            }
+
         }
     }
+
+    // bypass servers anti-cheat by not fishing in the same spot for more than 5 times
+    public void movePlayerHeadRandomly() {
+        if (client.player != null && modAutofish.getConfig().isRandomHeadMovementEnabled()) {
+            Random random = new Random();
+
+            // Calculate yaw and pitch changes
+            float yawChange = random.nextFloat() * 60 - 30; // Random between -30 and 30 degrees
+            float pitchChange = random.nextFloat() * 5 - 5; // Random small change
+
+            // Ensure the changes are enough to move the fishing rod by at least 3 blocks
+            yawChange = ensureMinimumDistance(yawChange, 3);
+            pitchChange = ensureMinimumDistance(pitchChange, 0.1f);
+
+            // Update the player's yaw and pitch
+            client.player.setYaw(client.player.getYaw() + yawChange);
+            client.player.setPitch(client.player.getPitch() + pitchChange);
+        }
+    }
+
+    private float ensureMinimumDistance(float change, float minDistance) {
+        if (Math.abs(change) < minDistance) {
+            return change < 0 ? -minDistance : minDistance;
+        }
+        return change;
+    }
+
 
     public void queueRecast() {
         modAutofish.getScheduler().scheduleAction(ActionType.RECAST, modAutofish.getConfig().getRecastDelay(), () -> {

@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 public class Config {
 
     @Expose boolean isAutofishEnabled = true;
+    @Expose boolean isRandomHeadMovementEnabled = true;
     @Expose boolean multiRod = false;
     @Expose boolean isOpenWaterDetectEnabled = true;
     @Expose boolean noBreak = false;
@@ -17,6 +18,11 @@ public class Config {
     public boolean isAutofishEnabled() {
         return isAutofishEnabled;
     }
+
+    public boolean isRandomHeadMovementEnabled() {
+        return isRandomHeadMovementEnabled;
+    }
+
     public boolean isOpenWaterDetectEnabled() {
         return isOpenWaterDetectEnabled;
     }
@@ -46,6 +52,10 @@ public class Config {
     }
 
     public void setAutofishEnabled(boolean autofishEnabled) { isAutofishEnabled = autofishEnabled; }
+
+    public void setRandomHeadMovementEnabled(boolean randomHeadMovementEnabled) {
+        isRandomHeadMovementEnabled = randomHeadMovementEnabled;
+    }
 
     public void setMultiRod(boolean multiRod) {
         this.multiRod = multiRod;
