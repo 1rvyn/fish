@@ -178,7 +178,7 @@ public class AutofishScreenBuilder {
                 .setSaveConsumer(newValue -> {
                     modAutofish.getConfig().setClearLagRegex(newValue);
                 })
-                .build();
+                .build();                
 
 
         SubCategoryBuilder subCatBuilderBasic = entryBuilder.startSubCategory(Text.translatable("options.autofish.basic.title"));

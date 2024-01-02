@@ -1,11 +1,14 @@
 {
   "key.autofish.open_gui": "Open Autofish GUI",
   "options.autofish.title": "Autofish Settings",
+  "options.fishcount.title": "Fish Caught",
 
   "options.autofish.toggle.on": "\u00A7aOn",
   "options.autofish.toggle.off": "\u00A7eOff",
 
   "options.autofish.enable.title": "Enable Autofish",
+  "options.fishcount.enable.title": "Total Fish Caught",
+
   "options.autofish.enable.tooltip": "Toggles the entire mod on or off.",
 
   "options.autofish.multirod.title": "Enable MultiRod",

@@ -13,6 +13,7 @@ import org.lwjgl.glfw.GLFW;
 import troy.autofish.config.Config;
 import troy.autofish.config.ConfigManager;
 import troy.autofish.gui.AutofishScreenBuilder;
+import troy.autofish.gui.FishCountScreenBuilder;
 import troy.autofish.scheduler.AutofishScheduler;
 
 public class FabricModAutofish implements ClientModInitializer {
@@ -21,6 +22,7 @@ public class FabricModAutofish implements ClientModInitializer {
     private Autofish autofish;
     private AutofishScheduler scheduler;
     private KeyBinding autofishGuiKey;
+    private KeyBinding fishcountGuiKey;
     private ConfigManager configManager;
 
     @Override
@@ -30,7 +32,8 @@ public class FabricModAutofish implements ClientModInitializer {
 
         //Create ConfigManager
         this.configManager = new ConfigManager(this);
-        //Register Keybinding
+        //Register Keybindings
+        fishcountGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fishcount.open_gui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, "Fish Count"));
         autofishGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.autofish.open_gui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V, "Autofish"));
         //Register Tick Callback
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
@@ -44,6 +47,10 @@ public class FabricModAutofish implements ClientModInitializer {
     public void tick(MinecraftClient client) {
         if (autofishGuiKey.wasPressed()) {
             client.setScreen(AutofishScreenBuilder.buildScreen(this, client.currentScreen));
+        }
+        
+        if (fishcountGuiKey.wasPressed()) {
+            client.setScreen(FishCountScreenBuilder.buildScreen(this, client.currentScreen));
         }
         autofish.tick(client);
         scheduler.tick(client);
