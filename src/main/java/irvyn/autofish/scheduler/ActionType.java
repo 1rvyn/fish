@@ -1,4 +1,4 @@
-package troy.autofish.scheduler;
+package irvyn.autofish.scheduler;
 
 public enum ActionType {
     RECAST,

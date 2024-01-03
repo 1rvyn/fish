@@ -1,4 +1,4 @@
-package troy.autofish.monitor;
+package irvyn.autofish.monitor;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import troy.autofish.Autofish;
+import irvyn.autofish.Autofish;
 
 
 public class FishMonitorMPMotion implements FishMonitorMP {

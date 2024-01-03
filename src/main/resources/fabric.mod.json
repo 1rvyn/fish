@@ -29,10 +29,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "troy.autofish.FabricModAutofish"
+      "irvyn.autofish.FabricModAutofish"
     ],
     "modmenu": [
-      "troy.autofish.modmenu.ModMenuApiAutofish"
+      "irvyn.autofish.modmenu.ModMenuApiAutofish"
     ]
   },
   "mixins": [

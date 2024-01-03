@@ -1,4 +1,4 @@
-package troy.autofish.mixin;
+package irvyn.autofish.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import troy.autofish.FabricModAutofish;
+import irvyn.autofish.FabricModAutofish;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkHandler implements TickablePacketListener, ClientPlayPacketListener {

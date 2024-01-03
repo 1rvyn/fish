@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
-    "MixinFishHookEntity",
-    "MixinClientPlayNetworkHandler"
+    "irvyn.autofish.mixin.MixinFishHookEntity",
+    "irvyn.autofish.mixin.MixinClientPlayNetworkHandler"
   ],
   "injectors": {
     "defaultRequire": 1

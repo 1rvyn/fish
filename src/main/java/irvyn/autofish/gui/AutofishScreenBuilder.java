@@ -1,5 +1,6 @@
-package troy.autofish.gui;
+package irvyn.autofish.gui;
 
+import irvyn.autofish.config.Config;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -7,8 +8,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import troy.autofish.FabricModAutofish;
-import troy.autofish.config.Config;
+import irvyn.autofish.FabricModAutofish;
 
 import java.util.function.Function;
 

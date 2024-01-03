@@ -1,9 +1,9 @@
-package troy.autofish.modmenu;
+package irvyn.autofish.modmenu;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import troy.autofish.FabricModAutofish;
-import troy.autofish.gui.AutofishScreenBuilder;
+import irvyn.autofish.FabricModAutofish;
+import irvyn.autofish.gui.AutofishScreenBuilder;
 
 public class ModMenuApiAutofish implements ModMenuApi {
     @Override

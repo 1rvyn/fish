@@ -1,7 +1,7 @@
-package troy.autofish.scheduler;
+package irvyn.autofish.scheduler;
 
 import net.minecraft.client.MinecraftClient;
-import troy.autofish.FabricModAutofish;
+import irvyn.autofish.FabricModAutofish;
 
 import java.util.ArrayList;
 import java.util.List;

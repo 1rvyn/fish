@@ -1,5 +1,10 @@
-package troy.autofish;
+package irvyn.autofish;
 
+import irvyn.autofish.config.Config;
+import irvyn.autofish.config.ConfigManager;
+import irvyn.autofish.gui.AutofishScreenBuilder;
+import irvyn.autofish.gui.FishCountScreenBuilder;
+import irvyn.autofish.scheduler.AutofishScheduler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -10,11 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import org.lwjgl.glfw.GLFW;
-import troy.autofish.config.Config;
-import troy.autofish.config.ConfigManager;
-import troy.autofish.gui.AutofishScreenBuilder;
-import troy.autofish.gui.FishCountScreenBuilder;
-import troy.autofish.scheduler.AutofishScheduler;
 
 public class FabricModAutofish implements ClientModInitializer {
 

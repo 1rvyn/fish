@@ -1,9 +1,9 @@
-package troy.autofish.monitor;
+package irvyn.autofish.monitor;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.network.packet.Packet;
-import troy.autofish.Autofish;
+import irvyn.autofish.Autofish;
 
 public interface FishMonitorMP {
 

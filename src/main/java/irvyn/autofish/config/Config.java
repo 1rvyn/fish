@@ -1,4 +1,4 @@
-package troy.autofish.config;
+package irvyn.autofish.config;
 
 import com.google.gson.annotations.Expose;
 

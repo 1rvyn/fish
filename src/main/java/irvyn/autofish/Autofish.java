@@ -1,5 +1,9 @@
-package troy.autofish;
+package irvyn.autofish;
 
+import irvyn.autofish.monitor.FishMonitorMP;
+import irvyn.autofish.monitor.FishMonitorMPMotion;
+import irvyn.autofish.monitor.FishMonitorMPSound;
+import irvyn.autofish.scheduler.ActionType;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -12,19 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringHelper;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import troy.autofish.monitor.FishMonitorMP;
-import troy.autofish.monitor.FishMonitorMPMotion;
-import troy.autofish.monitor.FishMonitorMPSound;
-import troy.autofish.scheduler.ActionType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +47,8 @@ public class Autofish {
     public long timeMillis = 0L;
 
     private static final int FISH_COUNT_THRESHOLD = 10; 
-    private Map<String, Integer> fishCounts = new HashMap<>();
+    private Map<String, Map<String, Integer>> fishCounts = new HashMap<>();
+    //private Map<String, String> fishRarities = new HashMap<>();
 
     /**
      * Returns a copy of the fishCounts map
@@ -58,9 +56,19 @@ public class Autofish {
      * We return a copy to prevent the GUI from modifying the original map
      * @return
      */
-    public Map<String, Integer> getFishCounts() {
-        return new HashMap<>(fishCounts); 
+    public Map<String, Map<String, Integer>> getFishCounts() {
+        return new HashMap<String, Map<String, Integer>>(); 
     }
+
+     /**
+     * Returns a copy of the fishRarities map
+     * to be used by the GUI screen
+     * We return a copy to prevent the GUI from modifying the original map
+     * @return
+     */
+    // public Map<String, String> getFishRarity() {
+    //     return new HashMap<String, String>(fishRarities); 
+    // }
     
 
 
@@ -184,7 +192,12 @@ public class Autofish {
             // We retrieve the style of the text component that contains the fish name
             String rarity = getFishRarity(textComponent); // Default rarity
             if (rarity != null) {
-                fishCounts.put(fishName, fishCounts.getOrDefault(fishName, 0) + 1);
+                // here we will add the entry as we know the fishname and rarity
+                fishCounts.putIfAbsent(fishName, new HashMap<>());
+                fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
+                // debug output
+                System.out.println("Fish caught: " + fishName + " Rarity: " + rarity);
+                System.out.println("Fish counts: " + fishCounts);
             }
 
             // Output for debugging
@@ -226,29 +239,45 @@ public class Autofish {
 
         return "Unknown";
     }
-    
-    // Method to get rarity from color code as before
-    private String getRarityFromFormatting(TextColor color) {
-        // Define a map from Formatting to rarity
-        Map<Formatting, String> formattingRarityMap = new HashMap<Formatting, String>() {{
-            put(Formatting.GOLD, "Bronze");
-            put(Formatting.GRAY, "Silver");
-            put(Formatting.YELLOW, "Gold");
-            put(Formatting.AQUA, "Diamond");
-            put(Formatting.WHITE, "Platinum");
-            put(Formatting.DARK_PURPLE, "Mythical");
-            // If Light Purple is desired for Mythical, add Formatting.LIGHT_PURPLE
+
+
+    public String getColourFromRarity(String rarity) {
+        // Define a map from rarity to colour
+        Map<String, String> rarityColourMap = new HashMap<String, String>() {{
+            put("Bronze", "#D9941D");
+            put("Silver", "#E4E1DB");
+            put("Gold", "#FCDB2B");
+            put("Diamond", "#18CDE4");
+            put("Platinum", "#9B85B0");
+            put("Mythical", "#9400D3");
         }};
 
-        // #D9941D - Bronze
-        // #E4E1DB - Silver
-        // #FCDB2B - Gold
-        // #18CDE4 - Diamond
-        // #9B85B0 - Platinum
-        // #9400D3 - Mythical
-
-        return formattingRarityMap.getOrDefault(color, "Common");
+        return rarityColourMap.getOrDefault(rarity, "#FFFFFF"); // Default to white
     }
+
+    
+    // // Method to get rarity from color code as before
+    // private String getRarityFromFormatting(TextColor color) {
+    //     // Define a map from Formatting to rarity
+    //     Map<Formatting, String> formattingRarityMap = new HashMap<Formatting, String>() {{
+    //         put(Formatting.GOLD, "Bronze");
+    //         put(Formatting.GRAY, "Silver");
+    //         put(Formatting.YELLOW, "Gold");
+    //         put(Formatting.AQUA, "Diamond");
+    //         put(Formatting.WHITE, "Platinum");
+    //         put(Formatting.DARK_PURPLE, "Mythical");
+    //         // If Light Purple is desired for Mythical, add Formatting.LIGHT_PURPLE
+    //     }};
+
+    //     // #D9941D - Bronze
+    //     // #E4E1DB - Silver
+    //     // #FCDB2B - Gold
+    //     // #18CDE4 - Diamond
+    //     // #9B85B0 - Platinum
+    //     // #9400D3 - Mythical
+
+    //     return formattingRarityMap.getOrDefault(color, "Common");
+    // }
 
 
     public void catchFish() {

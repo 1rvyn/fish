@@ -1,10 +1,10 @@
-package troy.autofish.config;
+package irvyn.autofish.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
-import troy.autofish.FabricModAutofish;
+import irvyn.autofish.FabricModAutofish;
 
 import java.io.File;
 import java.nio.charset.Charset;
