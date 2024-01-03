@@ -23,8 +23,8 @@ public class FishCountScreenBuilder {
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         ConfigCategory configCat = builder.getOrCreateCategory(Text.translatable("options.fishcount.config"));
         // Retrieve and sort fish counts
-        Map<String, Map<String, Integer>> fishCounts = new TreeMap<>(modAutofish.getAutofish().getFishCounts()); // TreeMap sorts by keys
-        
+        Map<String, Map<String, Integer>> fishCounts =  modAutofish.getAutofish().getFishCounts(); // TreeMap sorts by keys
+    
         if (fishCounts.isEmpty()) {
             configCat.addEntry(entryBuilder.startTextDescription(Text.of("No fish caught")).build());
         } else {

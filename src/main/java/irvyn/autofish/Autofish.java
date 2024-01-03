@@ -57,7 +57,8 @@ public class Autofish {
      * @return
      */
     public Map<String, Map<String, Integer>> getFishCounts() {
-        return new HashMap<String, Map<String, Integer>>(); 
+        // return new HashMap<String, Map<String, Integer>>(); 
+        return new HashMap<String, Map<String, Integer>>(fishCounts);
     }
 
      /**
@@ -160,18 +161,12 @@ public class Autofish {
                             return;
                         //check if it matches
                         Matcher matcher = Pattern.compile(modAutofish.getConfig().getClearLagRegex(), Pattern.CASE_INSENSITIVE).matcher(StringHelper.stripTextFormat(packet.content().getString()));
-                        String fishCaughtRegex = "You caught a (.*?)!";
-                        // Matcher matcher2 = Pattern.compile(fishCaughtRegex, Pattern.CASE_INSENSITIVE).matcher(StringHelper.stripTextFormat(packet.content().getString()));
-
+                        
                         if (matcher.find()) {
                             queueRecast();
                         }
 
                         handleCustomFish(packet.content());
-                        // get the message from the packet keeping the formatting
-                        String message = packet.content().getString();
-
-
                     }
                 }
             }
@@ -192,7 +187,8 @@ public class Autofish {
                 // here we will add the entry as we know the fishname and rarity
                 fishCounts.putIfAbsent(fishName, new HashMap<>());
                 fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
-
+                System.out.println("Caught " + fishName + " with rarity " + rarity);
+                System.out.println(fishCounts);
             }
         }
     }
