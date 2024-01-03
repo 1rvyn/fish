@@ -3,10 +3,13 @@
   "minVersion": "0.8",
   "package": "irvyn.autofish.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "MixinFishHookEntity",
+    "MixinClientPlayNetworkHandler"
+  ],
   "client": [
-    "irvyn.autofish.mixin.MixinFishHookEntity",
-    "irvyn.autofish.mixin.MixinClientPlayNetworkHandler"
+    "MixinFishHookEntity",
+    "MixinClientPlayNetworkHandler"
   ],
   "injectors": {
     "defaultRequire": 1
