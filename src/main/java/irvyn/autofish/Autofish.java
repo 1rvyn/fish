@@ -170,7 +170,6 @@ public class Autofish {
                         handleCustomFish(packet.content());
                         // get the message from the packet keeping the formatting
                         String message = packet.content().getString();
-                        System.out.println("Message: " + message); // debug
 
 
                     }
@@ -181,9 +180,7 @@ public class Autofish {
 
     public void handleCustomFish(Text textComponent) {
         // Extracting the fish name and rarity from the formatted Text component
-        System.out.println("Text component: " + textComponent); // debug
         String rawText = textComponent.getString();
-        System.out.println("Raw text: " + rawText); // debug
         Matcher fishNameMatcher = Pattern.compile("You caught a (.*?)!").matcher(rawText);
         if (fishNameMatcher.find()) {
             String fishName = fishNameMatcher.group(1);
@@ -195,15 +192,8 @@ public class Autofish {
                 // here we will add the entry as we know the fishname and rarity
                 fishCounts.putIfAbsent(fishName, new HashMap<>());
                 fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
-                // debug output
-                System.out.println("Fish caught: " + fishName + " Rarity: " + rarity);
-                System.out.println("Fish counts: " + fishCounts);
+
             }
-
-            // Output for debugging
-            System.out.println("Fish caught: " + fishName + " Rarity: " + rarity);
-
-            // Increment the count inside the map
         }
     }
 

@@ -6,7 +6,8 @@
   "description": "Automatically reels in and recasts your fishing rod when you catch a fish. Now for 1.19.4+.",
   "authors": [
     "troyboy50",
-    "Wudji"
+    "Wudji",
+    "GradleBuild"
   ],
   "contributors": [
     "7coil",
