@@ -213,14 +213,6 @@ public class Autofish {
         // Regular expression to find color codes
         Pattern pattern = Pattern.compile("color=(#[0-9A-Fa-f]{6})");
         Matcher matcher = pattern.matcher(text);
-
-        // #D9941D - Bronze
-        // #E4E1DB - Silver
-        // #FCDB2B - Gold
-        // #18CDE4 - Diamond
-        // #9B85B0 - Platinum
-        // #9400D3 - Mythical
-
         // Map of color codes to rarities
         Map<String, String> colorToRarity = new HashMap<>();
         colorToRarity.put("#D9941D", "Bronze");
@@ -254,30 +246,6 @@ public class Autofish {
 
         return rarityColourMap.getOrDefault(rarity, "#FFFFFF"); // Default to white
     }
-
-    
-    // // Method to get rarity from color code as before
-    // private String getRarityFromFormatting(TextColor color) {
-    //     // Define a map from Formatting to rarity
-    //     Map<Formatting, String> formattingRarityMap = new HashMap<Formatting, String>() {{
-    //         put(Formatting.GOLD, "Bronze");
-    //         put(Formatting.GRAY, "Silver");
-    //         put(Formatting.YELLOW, "Gold");
-    //         put(Formatting.AQUA, "Diamond");
-    //         put(Formatting.WHITE, "Platinum");
-    //         put(Formatting.DARK_PURPLE, "Mythical");
-    //         // If Light Purple is desired for Mythical, add Formatting.LIGHT_PURPLE
-    //     }};
-
-    //     // #D9941D - Bronze
-    //     // #E4E1DB - Silver
-    //     // #FCDB2B - Gold
-    //     // #18CDE4 - Diamond
-    //     // #9B85B0 - Platinum
-    //     // #9400D3 - Mythical
-
-    //     return formattingRarityMap.getOrDefault(color, "Common");
-    // }
 
 
     public void catchFish() {
