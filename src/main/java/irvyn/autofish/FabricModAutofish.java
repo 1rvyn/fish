@@ -14,6 +14,8 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
+
 import org.lwjgl.glfw.GLFW;
 
 public class FabricModAutofish implements ClientModInitializer {
@@ -68,6 +70,13 @@ public class FabricModAutofish implements ClientModInitializer {
      */
     public void handleChat(GameMessageS2CPacket packet) {
         autofish.handleChat(packet);
+    }
+
+    /**
+     * Mixin callback for OpenScreen packets
+     */
+    public void handleOpenScreen(OpenScreenS2CPacket packet) {
+        autofish.handleOpenScreen(packet);
     }
 
     /**

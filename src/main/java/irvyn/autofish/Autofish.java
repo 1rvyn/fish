@@ -16,6 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -67,14 +70,8 @@ public class Autofish {
      * We return a copy to prevent the GUI from modifying the original map
      * @return
      */
-    // public Map<String, String> getFishRarity() {
-    //     return new HashMap<String, String>(fishRarities); 
-    // }
+   
     
-
-
-
-
     public Autofish(FabricModAutofish modAutofish) {
         this.modAutofish = modAutofish;
         this.client = MinecraftClient.getInstance();
@@ -172,6 +169,12 @@ public class Autofish {
             }
         }
     }
+
+    public void handleOpenScreen(OpenScreenS2CPacket packet) {
+       System.out.println(packet.getScreenHandlerType());
+       System.out.println(packet);
+    }
+    
 
     public void handleCustomFish(Text textComponent) {
         // Extracting the fish name and rarity from the formatted Text component

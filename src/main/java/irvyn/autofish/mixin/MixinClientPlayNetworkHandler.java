@@ -9,6 +9,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.TickablePacketListener;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,5 +38,11 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     public void onChatMessage(GameMessageS2CPacket chatMessageS2CPacket_1, CallbackInfo ci) {
         if (client.isOnThread()) FabricModAutofish.getInstance().handleChat(chatMessageS2CPacket_1);
     }
+
+    @Inject(method = "onOpenScreen", at = @At("HEAD"))
+    public void onOpenScreen(OpenScreenS2CPacket packet, CallbackInfo ci) {
+        if (client.isOnThread()) FabricModAutofish.getInstance().handleOpenScreen(packet);
+    }
+
 
 }
