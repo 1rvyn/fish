@@ -24,3 +24,5 @@ bin/
 
 run/
 remappedSrc/
+src/main/java/.DS_Store
+.gitignore

@@ -6,6 +6,7 @@ import irvyn.autofish.monitor.FishMonitorMPSound;
 import irvyn.autofish.scheduler.ActionType;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -17,6 +18,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
+import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
@@ -27,6 +29,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -174,6 +177,24 @@ public class Autofish {
        System.out.println(packet.getScreenHandlerType());
        System.out.println(packet);
     }
+
+    public void handleContainerUpdate(ScreenHandlerSlotUpdateS2CPacket packet) {
+        ItemStack itemStack = packet.getStack();
+        System.out.println("Item: " + itemStack.getItem());
+        System.out.println("Count: " + itemStack.getCount());
+        System.out.println(itemStack.getNbt());
+
+        // other attempt
+        List<Text> tooltip = itemStack.getTooltip(null, TooltipContext.Default.BASIC);
+
+        for (Text text : tooltip) {
+            String line = text.getString();
+            if (line.contains("-")) {
+                System.out.println(line);
+            }
+            System.out.println("Lore: " + text.getString());
+        }
+    }
     
 
     public void handleCustomFish(Text textComponent) {
@@ -182,7 +203,6 @@ public class Autofish {
         Matcher fishNameMatcher = Pattern.compile("You caught a (.*?)!").matcher(rawText);
         if (fishNameMatcher.find()) {
             String fishName = fishNameMatcher.group(1);
-
             // Assuming the color code appears just before the fish name in the chat message
             // We retrieve the style of the text component that contains the fish name
             String rarity = getFishRarity(textComponent); // Default rarity

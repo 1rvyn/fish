@@ -15,6 +15,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
+import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
+
 
 import org.lwjgl.glfw.GLFW;
 
@@ -77,6 +79,13 @@ public class FabricModAutofish implements ClientModInitializer {
      */
     public void handleOpenScreen(OpenScreenS2CPacket packet) {
         autofish.handleOpenScreen(packet);
+    }
+
+    /**
+     * Mixin callback for ContainerUpdate packets
+     */
+    public void handleContainerUpdate(ScreenHandlerSlotUpdateS2CPacket packet) {
+        autofish.handleContainerUpdate(packet);
     }
 
     /**
