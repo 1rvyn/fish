@@ -48,11 +48,9 @@ public class Autofish {
     private float oldPitch = 0;
     private float oldYaw = 0;
     private long hookRemovedAt = 0L;
-    private int fishCount = 0;
 
     public long timeMillis = 0L;
 
-    private static final int FISH_COUNT_THRESHOLD = 10; 
     private Map<String, Map<String, Integer>> fishCounts = new HashMap<>();
     //private Map<String, String> fishRarities = new HashMap<>();
 
@@ -161,10 +159,16 @@ public class Autofish {
                             return;
                         //check if it matches
                         Matcher matcher = Pattern.compile(modAutofish.getConfig().getClearLagRegex(), Pattern.CASE_INSENSITIVE).matcher(StringHelper.stripTextFormat(packet.content().getString()));
-                        
+                        Matcher matcher2 = Pattern.compile("This area is suffering from overfishing, cast your rod in a different spot for more fish. At least 3 blocks away.", Pattern.LITERAL).matcher(StringHelper.stripTextFormat(packet.content().getString()));
                         if (matcher.find()) {
                             queueRecast();
                         }
+
+                        if (matcher2.find()) {
+                            System.out.println("Moving head...");
+                            movePlayerHeadRandomly();
+                            queueRecast();
+                        } 
 
                         handleCustomFish(packet.content());
                     }
@@ -201,6 +205,14 @@ public class Autofish {
         // Extracting the fish name and rarity from the formatted Text component
         String rawText = textComponent.getString();
         Matcher fishNameMatcher = Pattern.compile("You caught a (.*?)!").matcher(rawText);
+        Matcher crabMatcher = Pattern.compile("You fished up a (.*?)!").matcher(rawText);
+        if (crabMatcher.find()) {
+            // we will move and recast if we catch a crab
+            movePlayerHeadRandomly();
+            useRod();
+            System.out.println("You caught a crab!");
+        }
+
         if (fishNameMatcher.find()) {
             String fishName = fishNameMatcher.group(1);
             // Assuming the color code appears just before the fish name in the chat message
@@ -267,17 +279,16 @@ public class Autofish {
             //reel in
             useRod();
 
-            fishCount++;
-            if (fishCount >= FISH_COUNT_THRESHOLD) {
-                movePlayerHeadRandomly();
-                fishCount = 0; // reset the counter to prevent overflow
-            }
+            // fishCount++;
+            // if (fishCount >= FISH_COUNT_THRESHOLD) {
+            //     movePlayerHeadRandomly();
+            //     fishCount = 0; // reset the counter to prevent overflow
+            // }
 
         }
     }
 
     // bypass servers anti-cheat by not fishing in the same 
-    // spot for more than FISH_COUNT_THRESHOLD times
     public void movePlayerHeadRandomly() {
         if (client.player != null && modAutofish.getConfig().isRandomHeadMovementEnabled()) {
             // Reset the player's yaw and pitch if they recently moved
