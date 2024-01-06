@@ -43,7 +43,23 @@ public class AutofishScreenBuilder {
                 .setDefaultValue(defaults.isAutofishEnabled())
                 .setTooltip(Text.translatable("options.autofish.enable.tooltip"))
                 .setSaveConsumer(newValue -> {
-                    modAutofish.getConfig().setAutofishEnabled(newValue);
+                        modAutofish.getConfig().setAutofishEnabled(newValue);
+                })
+                .setYesNoTextSupplier(yesNoTextSupplier)
+                .build();
+
+        AbstractConfigListEntry toggleLichenAutoHarvest = entryBuilder.startBooleanToggle(Text.translatable("options.autofish.lichen_auto_harvest.title"), config.isLichenHarvestEnabled())
+                .setDefaultValue(defaults.isLichenHarvestEnabled())
+                .setTooltip(Text.translatable("options.autofish.lichen_auto_harvest.tooltip_0"))
+                .setSaveConsumer(newValue -> {
+                    modAutofish.getConfig().setLichenHarvestEnabled(newValue);
+                    if (newValue) {
+                        System.out.println("new value: " + newValue);
+                        modAutofish.getAutofish().lichenHarvest();
+                        } else {
+                        // Code to release the left mouse button
+                        modAutofish.getAutofish().releaseLeftClick();
+                        }
                 })
                 .setYesNoTextSupplier(yesNoTextSupplier)
                 .build();
@@ -183,6 +199,7 @@ public class AutofishScreenBuilder {
 
         SubCategoryBuilder subCatBuilderBasic = entryBuilder.startSubCategory(Text.translatable("options.autofish.basic.title"));
         subCatBuilderBasic.add(toggleAutofish);
+        subCatBuilderBasic.add(toggleLichenAutoHarvest);
         subCatBuilderBasic.add(toggleRandomHeadMovement);
         subCatBuilderBasic.add(toggleMultiRod);
         subCatBuilderBasic.add(toggleOpenWaterDetection);

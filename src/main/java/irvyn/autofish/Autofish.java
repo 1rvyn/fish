@@ -19,8 +19,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -89,6 +87,39 @@ public class Autofish {
         });
     }
 
+    public void releaseLeftClick() {
+        if (client.player != null) {
+            System.out.println("released left click");
+            
+        }
+    }
+
+    public void lichenHarvest() {
+        if (client.player != null && modAutofish.getConfig().isLichenHarvestEnabled() && isHoldingShears()) {
+            System.out.println("enabled lichen harvest");
+            PlayerInventory inventory = client.player.getInventory();
+            boolean foundShear = false;
+            for (int i = 0; i < inventory.main.size(); i++) {
+                ItemStack slot = inventory.main.get(i);
+                if (slot.getItem() == Items.SHEARS) {
+                    if (slot.getDamage() < 235) {
+                        inventory.selectedSlot = i;
+                        client.options.attackKey.setPressed(true);
+                        return;
+                    } else {
+                        foundShear = false;
+                        // stop harvesting
+                        client.options.attackKey.setPressed(false);
+                    }
+                }
+            }
+            if (!foundShear) {
+                modAutofish.getConfig().setLichenHarvestEnabled(false);
+            }
+        
+        }
+    }
+
     public void tick(MinecraftClient client) {
 
         if (client.world != null && client.player != null && modAutofish.getConfig().isAutofishEnabled()) {
@@ -107,6 +138,9 @@ public class Autofish {
                 }
             } else { //not holding fishing rod
                 removeHook();
+            }
+            if (modAutofish.getConfig().isLichenHarvestEnabled()) {
+                lichenHarvest();
             }
         }
     }
@@ -279,12 +313,6 @@ public class Autofish {
             //reel in
             useRod();
 
-            // fishCount++;
-            // if (fishCount >= FISH_COUNT_THRESHOLD) {
-            //     movePlayerHeadRandomly();
-            //     fishCount = 0; // reset the counter to prevent overflow
-            // }
-
         }
     }
 
@@ -437,6 +465,10 @@ public class Autofish {
         return isItemFishingRod(getHeldItem().getItem());
     }
 
+    public boolean isHoldingShears() {
+        return isItemShears(getHeldItem().getItem());
+    }
+
     private Hand getCorrectHand() {
         if (!modAutofish.getConfig().isMultiRod()) {
             if (isItemFishingRod(client.player.getOffHandStack().getItem())) return Hand.OFF_HAND;
@@ -454,6 +486,10 @@ public class Autofish {
 
     private boolean isItemFishingRod(Item item) {
         return item == Items.FISHING_ROD || item instanceof FishingRodItem;
+    }
+
+    private boolean isItemShears(Item item) {
+        return item == Items.SHEARS;
     }
 
     public void setDetection() {

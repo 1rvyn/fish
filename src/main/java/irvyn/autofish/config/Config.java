@@ -6,6 +6,7 @@ public class Config {
 
     @Expose boolean isAutofishEnabled = true;
     @Expose boolean isRandomHeadMovementEnabled = true;
+    @Expose boolean isLichenHarvestEnabled = false;    
     @Expose boolean multiRod = false;
     @Expose boolean isOpenWaterDetectEnabled = true;
     @Expose boolean noBreak = false;
@@ -17,6 +18,10 @@ public class Config {
 
     public boolean isAutofishEnabled() {
         return isAutofishEnabled;
+    }
+
+    public boolean isLichenHarvestEnabled() {
+        return isLichenHarvestEnabled;
     }
 
     public boolean isRandomHeadMovementEnabled() {
@@ -55,6 +60,10 @@ public class Config {
 
     public void setRandomHeadMovementEnabled(boolean randomHeadMovementEnabled) {
         isRandomHeadMovementEnabled = randomHeadMovementEnabled;
+    }
+
+    public void setLichenHarvestEnabled(boolean lichenHarvestEnabled) {
+        isLichenHarvestEnabled = lichenHarvestEnabled;
     }
 
     public void setMultiRod(boolean multiRod) {

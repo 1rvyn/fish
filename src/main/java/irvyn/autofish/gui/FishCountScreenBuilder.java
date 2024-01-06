@@ -1,7 +1,6 @@
 package irvyn.autofish.gui;
 
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -16,7 +15,7 @@ public class FishCountScreenBuilder {
     public static Screen buildScreen(FabricModAutofish modAutofish, Screen parentScreen) {
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parentScreen)
-                .setTitle(Text.translatable("options.fishcount.title"))
+                .setTitle(Text.translatable("options.fish_count.title"))
                 .transparentBackground()
                 .setDoesConfirmSave(false); // Set to false if there's nothing to save
 
@@ -44,11 +43,11 @@ public class FishCountScreenBuilder {
 
                     configCat.addEntry(entryBuilder.startTextDescription(entryText).build());
                 }
-                }
             }
+        }
 
             return builder.build();
-        }
+    }
 
     // Method to convert hex color code to Minecraft Formatting
     // This is a simple example. You might need to adjust this based on your color codes

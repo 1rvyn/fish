@@ -1,6 +1,8 @@
 {
   "key.autofish.open_gui": "Open Autofish GUI",
   "options.autofish.title": "Autofish Settings",
+  "options.fishcount.title": "Fish Caught",
+  "options.fish_count.title": "Fish Caught",
 
   "options.autofish.toggle.on": "\u00A7aOn",
   "options.autofish.toggle.off": "\u00A7eOff",
@@ -28,7 +30,8 @@
   "options.autofish.open_water_detection.tooltip_1" : "You can only get treasure loot at open water.",
   "options.autofish.open_water_detection.tooltip_2" : "This will alert you when you are not fishing at open water.",
 
-
+  "options.autofish.lichen_auto_harvest.title" : "Enable Lichen Auto Harvest",
+  "options.autofish.lichen_auto_harvest.tooltip_0" : "Automatically harvests lichen",
 
 
   "options.autofish.persistent.title": "Enable Persistent Mode",

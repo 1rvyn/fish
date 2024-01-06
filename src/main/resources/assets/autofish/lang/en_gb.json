@@ -2,6 +2,7 @@
   "key.autofish.open_gui": "Open Autofish GUI",
   "options.autofish.title": "Autofish Settings",
   "options.fishcount.title": "Fish Caught",
+  "options.fish_count.title": "Fish Caught",
 
   "options.autofish.toggle.on": "\u00A7aOn",
   "options.autofish.toggle.off": "\u00A7eOff",
@@ -9,8 +10,16 @@
   "options.autofish.enable.title": "Enable Autofish",
   "options.fishcount.enable.title": "Total Fish Caught",
 
-  "options.autofish.enable.tooltip": "Toggles the entire mod on or off.",
+  "options.autofish.lichen_auto_harvest.title" : "Enable Lichen Auto Harvest",
+  "options.autofish.lichen_auto_harvest.tooltip_0" : "Automatically harvests lichen",
 
+  "options.autofish.enable.tooltip": "Toggles the entire mod on or off.",
+  "options.autofish.randomHeadMovement.title": "Enable Random Head Movement",
+  "options.autofish.randomHeadMovement.tooltip_0": "Randomly moves your head",
+  "options.autofish.randomHeadMovement.tooltip_1": "while fishing to prevent it",
+  "options.autofish.randomHeadMovement.tooltip_2": "from getting stuck in one position.",
+
+  
   "options.autofish.multirod.title": "Enable MultiRod",
   "options.autofish.multirod.tooltip_0": "Cycles through all of the",
   "options.autofish.multirod.tooltip_1": "available rods in the hotbar,",
