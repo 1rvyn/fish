@@ -54,12 +54,8 @@ public class AutofishScreenBuilder {
                 .setSaveConsumer(newValue -> {
                     modAutofish.getConfig().setLichenHarvestEnabled(newValue);
                     if (newValue) {
-                        System.out.println("new value: " + newValue);
                         modAutofish.getAutofish().lichenHarvest();
-                        } else {
-                        // Code to release the left mouse button
-                        modAutofish.getAutofish().releaseLeftClick();
-                        }
+                        } 
                 })
                 .setYesNoTextSupplier(yesNoTextSupplier)
                 .build();

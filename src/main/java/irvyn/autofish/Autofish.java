@@ -87,16 +87,10 @@ public class Autofish {
         });
     }
 
-    public void releaseLeftClick() {
-        if (client.player != null) {
-            System.out.println("released left click");
-            
-        }
-    }
+    
 
     public void lichenHarvest() {
         if (client.player != null && modAutofish.getConfig().isLichenHarvestEnabled() && isHoldingShears()) {
-            System.out.println("enabled lichen harvest");
             PlayerInventory inventory = client.player.getInventory();
             boolean foundShear = false;
             for (int i = 0; i < inventory.main.size(); i++) {
