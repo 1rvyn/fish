@@ -78,7 +78,10 @@ public class Autofish {
 
         //Initiate the repeating action for persistent mode casting
         modAutofish.getScheduler().scheduleRepeatingAction(10000, () -> {
-            if(!modAutofish.getConfig().isPersistentMode()) return;
+            if(!modAutofish.getConfig().isPersistentMode()){
+               
+                return;
+            } 
             if(!isHoldingFishingRod()) return;
             if(hookExists) return;
             if(modAutofish.getScheduler().isRecastQueued()) return;
@@ -250,11 +253,17 @@ public class Autofish {
                 // here we will add the entry as we know the fishname and rarity
                 fishCounts.putIfAbsent(fishName, new HashMap<>());
                 fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
-                System.out.println("Caught " + fishName + " with rarity " + rarity);
-                System.out.println(fishCounts);
+                if (rarity.equals("Gold")) {
+                    // send a chat message saying "GG lets go"
+                    // System.out.println("g");
+                    // Text braggingmessage = Text.of("Hi");
+                    // client.player.sendMessage(braggingmessage);
+                }
             }
         }
     }
+
+
 
     public String getFishRarity(Text textComponent) {
         String text = textComponent.toString();
@@ -323,12 +332,12 @@ public class Autofish {
             Random random = new Random();
 
             // Calculate yaw and pitch changes
-            float yawChange = random.nextFloat() * 60 - 30; // Random between -30 and 30 degrees
+            float yawChange = random.nextFloat() * 60 - 40; // Random between -30 and 30 degrees
             float pitchChange = random.nextFloat() * 5 - 5; // Random small change
 
             // Ensure the changes are enough to move the fishing rod by at least 3 blocks
             yawChange = ensureMinimumDistance(yawChange, 3);
-            pitchChange = ensureMinimumDistance(pitchChange, 0.1f);
+            pitchChange = Math.max(ensureMinimumDistance(pitchChange, 0.1f), pitchChange);
 
             // Update the player's yaw and pitch
             client.player.setYaw(client.player.getYaw() + yawChange);
