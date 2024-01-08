@@ -319,7 +319,9 @@ public class Autofish {
         }
     }
 
-    // bypass servers anti-cheat by not fishing in the same 
+    // bypass servers anti-cheat by not fishing in the same 3 block area
+    // TODO: make this smarter to detect if it moved the bobber 3 blocks
+    // make it simple - reset after moving 3 blocks
     public void movePlayerHeadRandomly() {
         if (client.player != null && modAutofish.getConfig().isRandomHeadMovementEnabled()) {
             // Reset the player's yaw and pitch if they recently moved
