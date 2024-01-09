@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
@@ -25,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.StringHelper;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.event.GameEvent.Message;
 
 import java.util.HashMap;
 import java.util.List;
@@ -236,7 +238,7 @@ public class Autofish {
         // Extracting the fish name and rarity from the formatted Text component
         String rawText = textComponent.getString();
         Matcher fishNameMatcher = Pattern.compile("You caught a (.*?)!").matcher(rawText);
-        Matcher crabMatcher = Pattern.compile("You fished up a (.*?)!").matcher(rawText);
+        Matcher crabMatcher = Pattern.compile("aaaaa aaaa").matcher(rawText);
         if (crabMatcher.find()) {
             // we will move and recast if we catch a crab
             movePlayerHeadRandomly();
@@ -253,11 +255,16 @@ public class Autofish {
                 // here we will add the entry as we know the fishname and rarity
                 fishCounts.putIfAbsent(fishName, new HashMap<>());
                 fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
-                if (rarity.equals("Gold")) {
+                if (rarity.equals("Platnium")) {
                     // send a chat message saying "GG lets go"
-                    // System.out.println("g");
-                    // Text braggingmessage = Text.of("Hi");
-                    // client.player.sendMessage(braggingmessage);
+                    String braggingMessage = "GG lets go";
+
+                    // Ensure the client and network handler are not null
+                    if (client != null && client.getNetworkHandler() != null) {
+                        // Create a chat packet and send it
+                        System.out.println("Sending chat message");
+                        client.getNetworkHandler().sendChatMessage(braggingMessage);
+                    }
                 }
             }
         }
