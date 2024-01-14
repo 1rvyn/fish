@@ -12,6 +12,9 @@
 
   "options.autofish.lichen_auto_harvest.title" : "Enable Lichen Auto Harvest",
   "options.autofish.lichen_auto_harvest.tooltip_0" : "Automatically harvests lichen",
+  
+  "options.bamboo_harvest.title" : "Enable Bamboo Afk Harvest",
+
 
   "options.autofish.enable.tooltip": "Toggles the entire mod on or off.",
   "options.autofish.randomHeadMovement.title": "Enable Random Head Movement",

@@ -33,6 +33,8 @@
   "options.autofish.lichen_auto_harvest.title" : "Enable Lichen Auto Harvest",
   "options.autofish.lichen_auto_harvest.tooltip_0" : "Automatically harvests lichen",
 
+  "options.bamboo_harvest.title" : "Enable Bamboo Afk Harvest",
+
 
   "options.autofish.persistent.title": "Enable Persistent Mode",
   "options.autofish.persistent.tooltip_0": "Enable this to always keep the fish hook",

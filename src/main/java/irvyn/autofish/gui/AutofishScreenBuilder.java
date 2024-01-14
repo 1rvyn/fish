@@ -60,6 +60,18 @@ public class AutofishScreenBuilder {
                 .setYesNoTextSupplier(yesNoTextSupplier)
                 .build();
 
+        AbstractConfigListEntry toggleBambooHarvest = entryBuilder.startBooleanToggle(
+                        Text.translatable("options.bamboo_harvest.title"), 
+                        config.isBambooHarvestEnabled()
+                      )
+                      .setDefaultValue(defaults.isBambooHarvestEnabled())
+                      .setSaveConsumer(newValue -> {
+                        modAutofish.getConfig().setBambooHarvestEnabled(newValue);
+                      })
+                      .setYesNoTextSupplier(yesNoTextSupplier)
+                      .build();
+                      
+
         // Enable Random Head Movement
         AbstractConfigListEntry toggleRandomHeadMovement = entryBuilder.startBooleanToggle(Text.translatable("options.autofish.randomHeadMovement.title"), config.isRandomHeadMovementEnabled())
                 .setDefaultValue(defaults.isRandomHeadMovementEnabled())
@@ -196,6 +208,7 @@ public class AutofishScreenBuilder {
         SubCategoryBuilder subCatBuilderBasic = entryBuilder.startSubCategory(Text.translatable("options.autofish.basic.title"));
         subCatBuilderBasic.add(toggleAutofish);
         subCatBuilderBasic.add(toggleLichenAutoHarvest);
+        subCatBuilderBasic.add(toggleBambooHarvest);
         subCatBuilderBasic.add(toggleRandomHeadMovement);
         subCatBuilderBasic.add(toggleMultiRod);
         subCatBuilderBasic.add(toggleOpenWaterDetection);

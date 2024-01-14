@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 public class Config {
 
     @Expose boolean isAutofishEnabled = true;
+    @Expose boolean isBambooHarvestEnabled = false;
     @Expose boolean isRandomHeadMovementEnabled = true;
     @Expose boolean isLichenHarvestEnabled = false;    
     @Expose boolean multiRod = false;
@@ -22,6 +23,10 @@ public class Config {
 
     public boolean isLichenHarvestEnabled() {
         return isLichenHarvestEnabled;
+    }
+
+    public boolean isBambooHarvestEnabled() {
+        return isBambooHarvestEnabled;
     }
 
     public boolean isRandomHeadMovementEnabled() {
@@ -64,6 +69,10 @@ public class Config {
 
     public void setLichenHarvestEnabled(boolean lichenHarvestEnabled) {
         isLichenHarvestEnabled = lichenHarvestEnabled;
+    }
+
+    public void setBambooHarvestEnabled(boolean bambooHarvestEnabled) {
+        isBambooHarvestEnabled = bambooHarvestEnabled;
     }
 
     public void setMultiRod(boolean multiRod) {

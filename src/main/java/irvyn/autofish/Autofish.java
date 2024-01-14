@@ -20,12 +20,16 @@ import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringHelper;
 import net.minecraft.util.Util;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent.Message;
 
 import java.util.HashMap;
@@ -92,7 +96,78 @@ public class Autofish {
         });
     }
 
+    private int bambooHarvestCooldown = 0; // cooldown in ticks
+
+    public void bambooHarvest() {
+                PlayerInventory inventory = client.player.getInventory();
+                if (bambooHarvestCooldown <= 0) {
+                if (!inventory.offHand.get(0).isOf(Items.BAMBOO)) {
+
+                    System.out.println("Not holding bamboo in offhand, trying to replenish");
+                    
+                    // refill from main inventory
+                    for (int i = 0; i < inventory.main.size(); i++) {
+                        final int index = i;
+                        ItemStack stack = inventory.main.get(index);
+                        if (stack.isOf(Items.BAMBOO)) {
+                            // Move bamboo to offhand
+                            client.execute(() -> {
+                                // Select the bamboo slot
+                                inventory.selectedSlot = index;
+                                // Swap with offhand
+                                client.interactionManager.clickSlot(client.player.currentScreenHandler.syncId,
+                                        45, // The slot ID for the offhand slot
+                                        index,
+                                        SlotActionType.SWAP,
+                                        client.player);
+                            });
+                            break;
+                        }
+                    }
+                }
+                
+
+                // Find axe in main hand
+                boolean axeUsed = false;
+                for (int i = 0; i < inventory.main.size() && !axeUsed; i++) {
+                    final int axeIndex = i;
+                    ItemStack slot = inventory.main.get(axeIndex);
+                    if (isAxe(slot.getItem())) {
+                        if (slot.getDamage() < slot.getMaxDamage() - 10) {
+
+                            inventory.selectedSlot = axeIndex;
+                            BlockPos placePos = client.player.getBlockPos().offset(client.player.getHorizontalFacing());
+                            Vec3d hitVec = new Vec3d(placePos.getX() + 0.5, placePos.getY() + 0.5,
+                                    placePos.getZ() + 0.5);
+                            // Break bamboo
+                            client.execute(() -> {
+                                client.interactionManager.attackBlock(placePos, Direction.UP);
+                                client.player.swingHand(Hand.MAIN_HAND);
+                            });
+                            axeUsed = true; // Set flag to true after using the axe
+                            // Find bamboo in offhand
+                            if (isBamboo(client.player.getOffHandStack().getItem())) {
+                                // Place bamboo
+                                // Use player's current block position instead of fixed location
+                                client.execute(() -> {
+                                    client.interactionManager.interactBlock(client.player, Hand.OFF_HAND,
+                                            new BlockHitResult(hitVec, client.player.getHorizontalFacing(),
+                                                    placePos, false));
+                                });
+                            }
+                        }
+                    }
+                }
+                bambooHarvestCooldown = 1;
+            }
+            
+        }
     
+
+
+    
+
+
 
     public void lichenHarvest() {
         if (client.player != null && modAutofish.getConfig().isLichenHarvestEnabled() && isHoldingShears()) {
@@ -119,8 +194,10 @@ public class Autofish {
         }
     }
 
-    public void tick(MinecraftClient client) {
 
+
+    public void tick(MinecraftClient client) {
+        
         if (client.world != null && client.player != null && modAutofish.getConfig().isAutofishEnabled()) {
 
            timeMillis = Util.getMeasuringTimeMs(); //update current working time for this tick
@@ -140,6 +217,13 @@ public class Autofish {
             }
             if (modAutofish.getConfig().isLichenHarvestEnabled()) {
                 lichenHarvest();
+            }
+
+            if (modAutofish.getConfig().isBambooHarvestEnabled()) {
+                bambooHarvest();
+                if (bambooHarvestCooldown > 0) {
+                    bambooHarvestCooldown--;
+                }
             }
         }
     }
@@ -238,8 +322,7 @@ public class Autofish {
         // Extracting the fish name and rarity from the formatted Text component
         String rawText = textComponent.getString();
         Matcher fishNameMatcher = Pattern.compile("You caught a (.*?)!").matcher(rawText);
-        Matcher crabMatcher = Pattern.compile("aaaaa aaaa").matcher(rawText);
-        if (crabMatcher.find()) {
+        Matcher crabMatcher = Pattern.compile("You sense that there night not be many fish left in this area\\. Try fishing at least 3 blocks away\\.").matcher(rawText);        if (crabMatcher.find()) {
             // we will move and recast if we catch a crab
             movePlayerHeadRandomly();
             useRod();
@@ -255,22 +338,18 @@ public class Autofish {
                 // here we will add the entry as we know the fishname and rarity
                 fishCounts.putIfAbsent(fishName, new HashMap<>());
                 fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
-                if (rarity.equals("Platnium")) {
+                if (rarity.equals("Platinum") || rarity.equals("Unknown")) {
                     // send a chat message saying "GG lets go"
                     String braggingMessage = "GG lets go";
-
                     // Ensure the client and network handler are not null
                     if (client != null && client.getNetworkHandler() != null) {
                         // Create a chat packet and send it
-                        System.out.println("Sending chat message");
                         client.getNetworkHandler().sendChatMessage(braggingMessage);
                     }
                 }
             }
         }
     }
-
-
 
     public String getFishRarity(Text textComponent) {
         String text = textComponent.toString();
@@ -345,7 +424,7 @@ public class Autofish {
             float pitchChange = random.nextFloat() * 5 - 5; // Random small change
 
             // Ensure the changes are enough to move the fishing rod by at least 3 blocks
-            yawChange = ensureMinimumDistance(yawChange, 3);
+            yawChange = ensureMinimumDistance(yawChange, 4);
             pitchChange = Math.max(ensureMinimumDistance(pitchChange, 0.1f), pitchChange);
 
             // Update the player's yaw and pitch
@@ -481,6 +560,18 @@ public class Autofish {
         return isItemShears(getHeldItem().getItem());
     }
 
+    public boolean isHoldingAxe() {
+        return isItemAxe(getHeldItem().getItem());
+    }
+
+    private boolean isAxe(Item item) {
+        return item == Items.DIAMOND_AXE || item == Items.NETHERITE_AXE;
+    }
+    
+    private boolean isBamboo(Item item) {
+        return item == Items.BAMBOO; 
+    }
+
     private Hand getCorrectHand() {
         if (!modAutofish.getConfig().isMultiRod()) {
             if (isItemFishingRod(client.player.getOffHandStack().getItem())) return Hand.OFF_HAND;
@@ -502,6 +593,10 @@ public class Autofish {
 
     private boolean isItemShears(Item item) {
         return item == Items.SHEARS;
+    }
+
+    private boolean isItemAxe(Item item) {
+        return item == Items.WOODEN_AXE || item == Items.STONE_AXE || item == Items.IRON_AXE || item == Items.GOLDEN_AXE || item == Items.DIAMOND_AXE || item == Items.NETHERITE_AXE;
     }
 
     public void setDetection() {
