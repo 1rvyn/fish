@@ -30,8 +30,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent.Message;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -274,9 +272,11 @@ public class Autofish {
                         //make sure there is actually something there in the regex field
                         if (org.apache.commons.lang3.StringUtils.deleteWhitespace(modAutofish.getConfig().getClearLagRegex()).isEmpty())
                             return;
-                        //check if it matches
+                        //check if it matches either of the CYT server messages
                         Matcher matcher = Pattern.compile(modAutofish.getConfig().getClearLagRegex(), Pattern.CASE_INSENSITIVE).matcher(StringHelper.stripTextFormat(packet.content().getString()));
                         Matcher matcher2 = Pattern.compile("This area is suffering from overfishing, cast your rod in a different spot for more fish. At least 3 blocks away.", Pattern.LITERAL).matcher(StringHelper.stripTextFormat(packet.content().getString()));
+                        // check if it matches the manacube fishing message
+                        Matcher matcher3 = Pattern.compile("might not be many fish in this area", Pattern.LITERAL).matcher(StringHelper.stripTextFormat(packet.content().getString()));
                         if (matcher.find()) {
                             queueRecast();
                         }
@@ -286,6 +286,10 @@ public class Autofish {
                             movePlayerHeadRandomly();
                             queueRecast();
                         } 
+
+                        if (matcher3.find()) {
+                            System.out.println("Moving head...");
+                        }
 
                         handleCustomFish(packet.content());
                     }
@@ -338,7 +342,7 @@ public class Autofish {
                 // here we will add the entry as we know the fishname and rarity
                 fishCounts.putIfAbsent(fishName, new HashMap<>());
                 fishCounts.get(fishName).put(rarity, fishCounts.get(fishName).getOrDefault(rarity, 0) + 1);
-                if (rarity.equals("Platinum") || rarity.equals("Unknown")) {
+                if (rarity.equals("Platinum")) {
                     // send a chat message saying "GG lets go"
                     String braggingMessage = "GG lets go";
                     // Ensure the client and network handler are not null
